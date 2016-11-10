@@ -2,6 +2,7 @@ var Neuvol;
 var game;
 var FPS = 60;
 var maxScore=0;
+var HOLE_HEIGHT = 120;
 
 var images = {};
 
@@ -77,6 +78,7 @@ var Pipe = function(json){
 	this.width = 50;
 	this.height = 40;
 	this.speed = 3;
+	this.verticalSpeed = 0;
 
 	this.init(json);
 }
@@ -89,6 +91,21 @@ Pipe.prototype.init = function(json){
 
 Pipe.prototype.update = function(){
 	this.x -= this.speed;
+	
+	var pipeBounceBuffer = 10;
+	if (this.isTopPipe()) {
+		this.height += this.verticalSpeed;
+		
+		if (this.height < pipeBounceBuffer || this.height > (game.height - HOLE_HEIGHT - pipeBounceBuffer)) {
+			this.verticalSpeed *= -1;
+		}
+	} else {
+		this.y += this.verticalSpeed;
+		
+		if (this.y < (pipeBounceBuffer + HOLE_HEIGHT) || this.y > (game.height - pipeBounceBuffer) {
+			this.verticalSpeed *= -1;    
+		}
+	}
 }
 
 Pipe.prototype.isOut = function(){
@@ -96,6 +113,11 @@ Pipe.prototype.isOut = function(){
 		return true;
 	}
 }
+
+Pipe.prototype.isTopPipe = function(){
+	return this.y === 0;
+}
+
 
 var Game = function(){
 	this.pipes = [];
@@ -185,10 +207,10 @@ Game.prototype.update = function(){
 
 	if(this.interval == 0){
 		var deltaBord = 50;
-		var pipeHoll = 120;
-		var hollPosition = Math.round(Math.random() * (this.height - deltaBord * 2 - pipeHoll)) +  deltaBord;
-		this.pipes.push(new Pipe({x:this.width, y:0, height:hollPosition}));
-		this.pipes.push(new Pipe({x:this.width, y:hollPosition+pipeHoll, height:this.height}));
+		var pipeVerticalMoveSpeed = (Math.random() * 3);
+		var hollPosition = Math.round(Math.random() * (this.height - deltaBord * 2 - HOLE_HEIGHT)) +  deltaBord;
+		this.pipes.push(new Pipe({x:this.width, y:0, height:hollPosition, verticalSpeed: pipeVerticalMoveSpeed}));
+		this.pipes.push(new Pipe({x:this.width, y:hollPosition+HOLE_HEIGHT, height:this.height, verticalSpeed: pipeVerticalMoveSpeed}));
 	}
 
 	this.interval++;
