@@ -156,11 +156,13 @@ Game.prototype.update = function(){
 	this.backgroundx += this.backgroundSpeed;
 	var nextHoll = 0;
 	var nextHoleVerticalVelocity = 0;
+	var distanceToNextPipe = 0;
 	if(this.birds.length > 0){
 		for(var i = 0; i < this.pipes.length; i+=2){
 			if(this.pipes[i].x + this.pipes[i].width > this.birds[0].x){
 				nextHoll = this.pipes[i].height/this.height;
 				nextHoleVerticalVelocity = this.pipes[i].verticalSpeed;
+				distanceToNextPipe = this.pipes[i].x - this.birds[0].x;
 				break;
 			}
 		}
@@ -172,7 +174,8 @@ Game.prototype.update = function(){
 			var inputs = [
 				this.birds[i].y / this.height,
 				nextHoll,
-				nextHoleVerticalVelocity
+				nextHoleVerticalVelocity,
+				distanceToNextPipe
 			];
 
 			var res = this.gen[i].compute(inputs);
@@ -286,7 +289,7 @@ window.onload = function(){
 	var start = function(){
 		Neuvol = new Neuroevolution({
 			population:50,
-			network:[3, [4], 1],
+			network:[4, [4], 1],
 		});
 		game = new Game();
 		game.start();
