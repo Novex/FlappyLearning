@@ -102,7 +102,7 @@ Pipe.prototype.update = function(){
 	} else {
 		this.y += this.verticalSpeed;
 		
-		if (this.y < (pipeBounceBuffer + HOLE_HEIGHT) || this.y > (game.height - pipeBounceBuffer) {
+		if (this.y < (pipeBounceBuffer + HOLE_HEIGHT) || this.y > (game.height - pipeBounceBuffer)) {
 			this.verticalSpeed *= -1;    
 		}
 	}
