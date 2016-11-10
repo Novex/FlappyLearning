@@ -175,7 +175,8 @@ Game.prototype.update = function(){
 				this.birds[i].y / this.height,
 				nextHoll,
 				nextHoleVerticalVelocity,
-				distanceToNextPipe
+				distanceToNextPipe,
+				this.birds[i].gravity
 			];
 
 			var res = this.gen[i].compute(inputs);
@@ -289,7 +290,7 @@ window.onload = function(){
 	var start = function(){
 		Neuvol = new Neuroevolution({
 			population:50,
-			network:[4, [8], 1],
+			network:[5, [3], 1],
 		});
 		game = new Game();
 		game.start();
